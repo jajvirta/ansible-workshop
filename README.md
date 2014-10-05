@@ -20,4 +20,15 @@ Rough structure of the workshop
 -------------------------------
 
 
-   1. 
+   1.
+
+
+
+Misc
+----
+
+   * http://devops2go.wordpress.com/2014/05/02/finding-and-using-vagrant-boxes/
+   * https://www.goodreads.com/author/show/8057285.Jeff_Geerling
+   * http://www.reddit.com/r/sysadmin/comments/1uwnyc/ansible_for_devops_a_book_ive_started_writing/
+   * https://leanpub.com/ansible-for-devops
+   
