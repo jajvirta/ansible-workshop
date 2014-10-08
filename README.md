@@ -28,7 +28,10 @@ Rough structure of the workshop
 Preparation:
 
    * Install Vagrant and VirtualBox.
-   * Run simple Vagrant setup to pre-download the image.
+      * https://www.vagrantup.com/downloads.html
+      * https://www.virtualbox.org/wiki/Downloads
+   * Predownload the Centos image.
+      * `vagrant box add https://googledrive.com/host/0B4tZlTbOXHYWVGpHRWZuTThGVUE/centos65_virtualbox_50G.box`
 
 Preparation for the instructor:
    
@@ -40,7 +43,8 @@ Preparation for the instructor:
 Actual work:
 
    1. Get the vagrant image running
-   2. 
+      * the simplest vagrant setup
+   2.  
 
 
 
