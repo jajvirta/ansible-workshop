@@ -9,18 +9,38 @@ Playground for (possible) Ansible/Vagrant hands-on workshop.
 Objectives of the hands-on workshop
 -----------------------------------
 
-   * 
+   * ...
    * Offer insight into benefits of Vagrant and Ansible with just a short intro
    * Teach the basics of Vagrant and Ansible
    * 
 
 
+Objective of the tasks
+----------------------
+
+   * Deploy a simple webapp that connects to a local (?) db and displays
+     hello world text. 
+
 
 Rough structure of the workshop
 -------------------------------
 
+Preparation:
 
-   1.
+   * Install Vagrant and VirtualBox.
+   * Run simple Vagrant setup to pre-download the image.
+
+Preparation for the instructor:
+   
+   * Put Vagrant and VirtualBox installers on a USB stick.
+   * The image also.
+
+
+
+Actual work:
+
+   1. Get the vagrant image running
+   2. 
 
 
 
