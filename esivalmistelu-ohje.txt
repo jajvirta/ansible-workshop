@@ -1,0 +1,36 @@
+
+
+1. Asenna VirtualBox
+  - https://www.virtualbox.org/
+
+2. Asenna Vagrant
+  - https://www.vagrantup.com/
+
+3. Tee johonkin hakemistoon tiedostot Vagrantfile ja bootstraph.sh
+
+Vagrantfile:
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "hashicorp/precise64"
+  config.vm.provision "shell", path: "bootstrap.sh"
+end
+
+bootstrap.sh:
+
+#!/bin/bash
+
+set -xe
+
+apt-get update
+apt-get install -y ansible
+
+4. Aja siellä komento: 
+
+    vagrant up
+
+
+Odota noin viisi minuuttia. Älä peljästy, vaikka tästä seuraa kauheasti
+tulostusta ruudulle.
+
+ 
+
