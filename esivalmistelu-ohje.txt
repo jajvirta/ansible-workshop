@@ -13,6 +13,7 @@ Vagrantfile:
 Vagrant.configure("2") do |config|
   config.vm.box = "hashicorp/precise64"
   config.vm.provision "shell", path: "bootstrap.sh"
+  config.vm.synced_folder ".", "/vagrant", :owner=> 'vagrant', :mount_options => ['dmode=755', 'fmode=644']
 end
 
 bootstrap.sh:
