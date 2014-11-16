@@ -1,8 +1,5 @@
 
 
-
-
-
 Aloitus
 -------
 
@@ -26,9 +23,67 @@ Ansiblen inventory
    * testataan että toimii: ansible -i hosts -c local -m ping
       * normaalisti ajetaan ssh:lla kohdekoneille, local connection paljon nopeampi
 
+Demonstroidaanko ssh-keygen -t rsa, cat .ssh/id_rsa.pub >> .ssh/authorized_keys (plus
+tarkista tiedosto-oikeudet) ssh localhost ja sit ilman localia?
+
+
+
+Hello world!
+------------
+
+   * tehdään helloworld.yml
+
+---
+
+- hosts: dev
+  tasks: 
+    - debug: msg="hello world!"
+
+
+lisätään:
+
+  vars:
+    message: "helo world-o"
+
+    - debug: msg="{{ message }}"
+
+(quotet koska ei haluta että yaml tulkitsee sen yaml dictiksi.)
+
+
+lisätään:
+
+- hosts: dev
+  connection: local <<==
+
+lisätään myös ansible.cfg, jossa:
+
+[defaults]
+hostfile=hosts
+
+=> päästään eroon komentorivioptioista kokonaan
+
+lisätään vielä toinen host (1.2.3.4)? ja esitellään --limit=localhost?
+
+
+Helloworld-rooli
+----------------
+
+
+mkdir -p roles/helloworld-server/tasks
+
+aja: ansible-playbook helloworld.yml
+
+=> ERROR: found role but did not find ..
+
+edit roles/helloworld-server/tasks/main.yml:
+
+---
+
+- name: debug
+  debug: msg="{{ message }}"
 
 
 
 
 
-ansible -komento 
+
