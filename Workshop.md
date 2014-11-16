@@ -31,7 +31,7 @@ tarkista tiedosto-oikeudet) ssh localhost ja sit ilman localia?
 Hello world!
 ------------
 
-   * tehdään `helloworld.yml`
+tehdään `helloworld.yml`
 
     ---
 
