@@ -23,7 +23,7 @@ Ansiblen inventory
    * testataan että toimii: ansible -i hosts -c local -m ping
       * normaalisti ajetaan ssh:lla kohdekoneille, local connection paljon nopeampi
 
-Demonstroidaanko ssh-keygen -t rsa, cat .ssh/id_rsa.pub >> .ssh/authorized_keys (plus
+TODO: Demonstroidaanko ssh-keygen -t rsa, cat .ssh/id_rsa.pub >> .ssh/authorized_keys (plus
 tarkista tiedosto-oikeudet) ssh localhost ja sit ilman localia?
 
 
@@ -31,23 +31,21 @@ tarkista tiedosto-oikeudet) ssh localhost ja sit ilman localia?
 Hello world!
 ------------
 
-   * tehdään helloworld.yml
+   * tehdään `helloworld.yml`
 
----
+    ---
 
-- hosts: dev
-  tasks: 
-    - debug: msg="hello world!"
+    - hosts: dev
+      tasks: 
+        - debug: msg="hello world!"
 
 
 lisätään:
 
   vars:
-    message: "helo world-o"
+    name: jarno
 
-    - debug: msg="{{ message }}"
-
-(quotet koska ei haluta että yaml tulkitsee sen yaml dictiksi.)
+    - debug: msg="hello world, {{ name }}!"
 
 
 lisätään:
@@ -69,18 +67,41 @@ Helloworld-rooli
 ----------------
 
 
-mkdir -p roles/helloworld-server/tasks
-
-aja: ansible-playbook helloworld.yml
-
+    mkdir -p roles/helloworld-server/tasks
+    
+    ansible-playbook helloworld.yml
+    
 => ERROR: found role but did not find ..
 
-edit roles/helloworld-server/tasks/main.yml:
+editoidaan roles/helloworld-server/tasks/main.yml:
 
----
+    ---
+    
+    - name: debug
+      debug: msg="hello world {{ name }}" 
 
-- name: debug
-  debug: msg="{{ message }}"
+
+Jotain hyödyllisempää
+---------------------
+
+
+    - name: perushakemisto
+      file: dest=/usr/local/hw state=directory
+
+
+run
+
+=> changed: [localhost] => syntyy hakemisto
+
+re-run
+
+=> sanoo vain että ok
+
+
+
+
+
+
 
 
 
