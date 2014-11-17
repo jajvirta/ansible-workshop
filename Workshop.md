@@ -1,5 +1,4 @@
 
-
 Aloitus
 -------
 
@@ -12,6 +11,12 @@ Aloitus
       * jaettu kansio => voi tehdä jutut virtuaalikoneen ulkopuolella
       * (voi editoida kummalla puolella vaan)
 
+
+Jos tulee mount-ongelmia:
+
+    sudo ln -s /opt/VBoxGuestAdditions-4.3.10/lib/VBoxGuestAdditions /usr/lib/VBoxGuestAdditions
+
+
 (Idea: tehdään tuotanto/testiympäristöä vastaava setup tyhjään koneeseen pienellä vaivalla.)
  
 
@@ -23,7 +28,7 @@ Ansiblen inventory
    * testataan että toimii: ansible -i hosts -c local -m ping
       * normaalisti ajetaan ssh:lla kohdekoneille, local connection paljon nopeampi
 
-TODO: Demonstroidaanko ssh-keygen -t rsa, cat .ssh/id_rsa.pub >> .ssh/authorized_keys (plus
+Demonstroidaanssh-keygen -t rsa, cat .ssh/id_rsa.pub >> .ssh/authorized_keys (plus
 tarkista tiedosto-oikeudet) ssh localhost ja sit ilman localia?
 
 
@@ -98,13 +103,48 @@ re-run
 => sanoo vain että ok
 
 
+ei varmaankaan haluta että käyttäjä on root-juures eli tehdään
+uusi käyttäjä!
+
+
+    - name: tee käyttäjä
+      user: name=veijo shell=/bin/bash
+
+re-run
+
+    sudo su - veijo
+
+korjataan hakemiston luontia:
+
+    file: dest=/usr/local/hw state=directory *owner=veijo*
+
+re-run
+
+    ls -lrt /usr/local/ | grep hw
+         
+
+ryhmille löytyy vastaava
+
+[n. 10 minuuttia tähän asti]
+
+Koodataan "serveri"
+-------------------
+
+serve.sh:
+
+    python -m SimpleHTTPServer &
+
+
+    - name: kopsaa serveri
+      copy: src=serve.sh dest=/usr/local/hw
 
 
 
 
+Konffataan "serveri" dynaamisesti
 
 
-
-
+...
+python -m SimpleHTTPServer $(cat port.txt)
 
 
