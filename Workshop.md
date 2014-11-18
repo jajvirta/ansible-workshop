@@ -16,22 +16,16 @@ Jos tulee mount-ongelmia:
 
     sudo ln -s /opt/VBoxGuestAdditions-4.3.10/lib/VBoxGuestAdditions /usr/lib/VBoxGuestAdditions
 
-
-(Idea: tehdään tuotanto/testiympäristöä vastaava setup tyhjään koneeseen pienellä vaivalla.)
- 
-
 Ansiblen inventory
 ------------------
 
-   * oletuspaikka /etc/ansible/hosts, me tehdään lokaali tiedosto hosts
+   * oletuspaikka `/etc/ansible/hosts`, me tehdään lokaali tiedosto hosts
    * sinne: [dev]\nlocalhost 
-   * testataan että toimii: ansible -i hosts -c local -m ping
+   * testataan että toimii: ansible -i hosts -c local all -m ping
       * normaalisti ajetaan ssh:lla kohdekoneille, local connection paljon nopeampi
 
 Demonstroidaanssh-keygen -t rsa, cat .ssh/id_rsa.pub >> .ssh/authorized_keys (plus
 tarkista tiedosto-oikeudet) ssh localhost ja sit ilman localia?
-
-
 
 Hello world!
 ------------
