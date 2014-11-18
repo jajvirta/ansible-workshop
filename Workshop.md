@@ -24,8 +24,8 @@ Ansiblen inventory
    * testataan että toimii: ansible -i hosts -c local all -m ping
       * normaalisti ajetaan ssh:lla kohdekoneille, local connection paljon nopeampi
 
-Demonstroidaanssh-keygen -t rsa, cat .ssh/id_rsa.pub >> .ssh/authorized_keys (plus
-tarkista tiedosto-oikeudet) ssh localhost ja sit ilman localia?
+Normaalisti tehtäis: ssh-keygen -t rsa, cat .ssh/id_rsa.pub >> .ssh/authorized_keys (plus
+tarkista tiedosto-oikeudet) ssh localhost ja sit ilman localia.
 
 Hello world!
 ------------
@@ -65,9 +65,12 @@ lisätään vielä toinen host (1.2.3.4)? ja esitellään --limit=localhost?
 Helloworld-rooli
 ----------------
 
-
     mkdir -p roles/helloworld-server/tasks
-    
+
+helloworld.yml:
+    roles:
+      - helloworld-server
+
     ansible-playbook helloworld.yml
     
 => ERROR: found role but did not find ..
@@ -79,14 +82,11 @@ editoidaan roles/helloworld-server/tasks/main.yml:
     - name: debug
       debug: msg="hello world {{ name }}" 
 
-
 Jotain hyödyllisempää
 ---------------------
 
-
     - name: perushakemisto
       file: dest=/usr/local/hw state=directory
-
 
 run
 
