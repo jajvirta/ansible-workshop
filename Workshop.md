@@ -159,12 +159,37 @@ re-runataan
 
 => success?
 
-    - name: poista smoketestin output
-      file: dest=/usr/local/hw/output.txt state=absent
     
     - name: smoketestaa palvelu
       get_url: url=http://localhost:{{ port_number }}/hw.txt dest=/usr/local/hw/output.txt
- 
+
+run
+re-run => ok?
+`get_url` ei runaa uudelleen kun dest on jo olemassa
+    
+    - name: poista smoketestin output
+      file: dest=/usr/local/hw/output.txt state=absent
+
+"dirty trick":
+
+    - name: smoketestaa palvelu
+      get_url: url=http://localhost:{{ port_number }}/hw.txt dest=/usr/local/hw/
+
+ladataan aina uudelleen
+
+testataan, että smoketesti toimii!
+
+    - service: name=serve.sh state=stopped
+
+=>
+
+    TASK: [hw-server | smoketestaa palvelu] ***************************************
+    failed: [localhost] => {"failed": true, "item": "", "status_code": -1}
+    msg: Request failed: <urlopen error [Errno 111] Connection refused>
+    
+    FATAL: all hosts have already failed -- aborting
+
+
 
 
 serve.sh
