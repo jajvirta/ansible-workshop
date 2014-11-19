@@ -161,7 +161,7 @@ re-runataan
 
     
     - name: smoketestaa palvelu
-      get_url: url=http://localhost:{{ port_number }}/hw.txt dest=/usr/local/hw/output.txt
+      get_url: url=http://localhost:8000/hw.txt dest=/usr/local/hw/output.txt
 
 run
 re-run => ok?
@@ -173,11 +173,17 @@ re-run => ok?
 "dirty trick":
 
     - name: smoketestaa palvelu
-      get_url: url=http://localhost:{{ port_number }}/hw.txt dest=/usr/local/hw/
+      get_url: url=http://localhost:8000/hw.txt dest=/usr/local/hw/
 
-ladataan aina uudelleen
+tai:
 
-testataan, että smoketesti toimii!
+    - name: smoketestaa palvelu
+      get_url: url=http://localhost:8000/hw.txt force=yes dest=/usr/local/hw/
+
+ladataan aina uudelleen. Pointtina myös se, että jos oikeasti haetaan
+jotain isoa get_urlilla, niin sitä ei haeta aina uudelleen!
+
+testataan, että smoketesti toimii:
 
     - service: name=serve.sh state=stopped
 
