@@ -136,6 +136,7 @@ serve.sh:
     #/bin/bash
     set -e
     if [[ $1 == "start" ]]; then
+      cd /usr/local/hw/
       python -m SimpleHTTPServer &
     elif [[ $1 == "stop" ]]; then
       kill $(pgrep -f SimpleHTTPServer)
@@ -144,26 +145,44 @@ serve.sh:
     - name: kopsaa serveri
       copy: src=serve.sh dest=/usr/local/hw mode=0755
 
+tehdään siitä "palvelu":
 
+    - file: src=/usr/local/hw/serve.sh dest=/etc/init.d/serve.sh state=link
 
+joten voidaan komentaa sitä niin kuin palvelua:
 
+    - service: name=serve.sh state=restarted
+
+("restarted" koska ei jakseta tehdä myös "status" funkkaria)
+
+re-runataan 
+
+=> success?
+
+    - name: poista smoketestin output
+      file: dest=/usr/local/hw/output.txt state=absent
+    
+    - name: smoketestaa palvelu
+      get_url: url=http://localhost:{{ port_number }}/hw.txt dest=/usr/local/hw/output.txt
+ 
 
 
 serve.sh
 --------
-#!/bin/bash
+    #!/bin/bash
+    
+    set -e
+    
+    if [[ $1 == "start" ]]; then
+      cd /usr/local/hw/app/
+      echo "starting hw server $(date +%H:%M) at port $(cat port.txt) " >> /usr/local/hw/hw.log
+      pwd >> /usr/local/hw/hw.log
+      python -m SimpleHTTPServer $(cat port.txt) >> /usr/local/hw/server.log 2>&1 &
+      echo "started the server" >> /usr/local/hw/hw.log
+    elif [[ $1 == "stop" ]]; then
+      kill $(pgrep -f SimpleHTTPServer)
+    fi
 
-set -e
-
-if [[ $1 == "start" ]]; then
-  cd /usr/local/hw/app/
-  echo "starting hw server $(date +%H:%M) at port $(cat port.txt) " >> /usr/local/hw/hw.log
-  pwd >> /usr/local/hw/hw.log
-  python -m SimpleHTTPServer $(cat port.txt) >> /usr/local/hw/server.log 2>&1 &
-  echo "started the server" >> /usr/local/hw/hw.log
-elif [[ $1 == "stop" ]]; then
-  kill $(pgrep -f SimpleHTTPServer)
-fi
 
 app_dir: /usr/local/hw/app
 port_number: 7999
