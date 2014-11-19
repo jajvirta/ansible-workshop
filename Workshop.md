@@ -124,13 +124,26 @@ ryhmille löytyy vastaava
 Koodataan "serveri"
 -------------------
 
-serve.sh:
+komentorivillä: 
 
     python -m SimpleHTTPServer &
+    wget -O- localhost:8000
+    fg
+    C-c
 
+serve.sh:
+
+    #/bin/bash
+    set -e
+    if [[ $1 == "start" ]]; then
+      python -m SimpleHTTPServer &
+    elif [[ $1 == "stop" ]]; then
+      kill $(pgrep -f SimpleHTTPServer)
+    fi
 
     - name: kopsaa serveri
-      copy: src=serve.sh dest=/usr/local/hw
+      copy: src=serve.sh dest=/usr/local/hw mode=0755
+
 
 
 
