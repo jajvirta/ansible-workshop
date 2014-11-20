@@ -62,6 +62,16 @@ hostfile=hosts
 lisätään vielä toinen host (1.2.3.4)? ja esitellään --limit=localhost?
 
 
+-v -vv -vvv
+
+käydään läpi tuloste:
+
+GATHERING FACTS (gather_facts: no)
+
+ansible -i hosts -c local -m setup dev
+
+gather_facts: no => voi ampua itseään jalkaan!
+
 Helloworld-rooli
 ----------------
 
@@ -89,6 +99,8 @@ Jotain hyödyllisempää
       file: dest=/usr/local/hw state=directory
 
 run
+
+no can do! lisätään sudo
 
 => changed: [localhost] => syntyy hakemisto
 
@@ -137,13 +149,17 @@ serve.sh:
     set -e
     if [[ $1 == "start" ]]; then
       cd /usr/local/hw/
-      python -m SimpleHTTPServer &
+      python -m SimpleHTTPServer >> /usr/local/hw/server.log 2>&1 &
     elif [[ $1 == "stop" ]]; then
       kill $(pgrep -f SimpleHTTPServer)
     fi
 
     - name: kopsaa serveri
       copy: src=serve.sh dest=/usr/local/hw mode=0755
+
+huomatkaa, että copy toimii myös sinne remote-hosteille tällai kivasti
+
+
 
 tehdään siitä "palvelu":
 
@@ -158,10 +174,9 @@ joten voidaan komentaa sitä niin kuin palvelua:
 re-runataan 
 
 => success?
-
     
     - name: smoketestaa palvelu
-      get_url: url=http://localhost:8000/hw.txt dest=/usr/local/hw/output.txt
+      get_url: url=http://localhost:8000 dest=/usr/local/hw/output.txt
 
 run
 re-run => ok?
@@ -195,6 +210,18 @@ testataan, että smoketesti toimii:
     
     FATAL: all hosts have already failed -- aborting
 
+(tai laitetaan kommenttiin restart ja suljetaan käsin se palvelu, niin kosahtaa)
+
+
+
+    - template: src=port.txt.j2 dest=/usr/local/hw/port.txt
+
+    python -m SimpleHTTPServer $(cat port.txt)
+
+
+host_vars:
+    port_number: 7999
+
 
 
 
@@ -214,9 +241,6 @@ serve.sh
       kill $(pgrep -f SimpleHTTPServer)
     fi
 
-
-app_dir: /usr/local/hw/app
-port_number: 7999
 
 
 Serviceksi muuttaminen
@@ -255,14 +279,5 @@ Serviceksi muuttaminen
 
 
 
-
-
-
-...
-
-Konffataan "serveri" dynaamisesti
-
-...
-python -m SimpleHTTPServer $(cat port.txt)
 
 
